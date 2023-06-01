@@ -90,9 +90,9 @@ async function run() {
             res.send(result);
         })
 
-        // security layer: verifyJWT 
-        // email same
-        // check admin 
+        // 1. security layer: verifyJWT 
+        // 2. email same
+        // 3. check admin 
         app.get('/users/admin/:email', verifyJWT, async (req, res) => {
             const email = req.params.email;
 
@@ -123,6 +123,12 @@ async function run() {
         // menu related apis 
         app.get('/menu', async (req, res) => {
             const result = await menuCollection.find().toArray();
+            res.send(result);
+        })
+
+        app.post('/menu', verifyJWT, verifyAdmin, async(req, res) =>{
+            const newItem = req.body;
+            const result = await menuCollection.insertOne(newItem);
             res.send(result);
         })
 
